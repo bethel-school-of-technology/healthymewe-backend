@@ -14,10 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-//const uri = process.env.ATLAS_URI;
-const uri = "mongodb+srv://dbuser:Password1!@cluster0-auwtc.mongodb.net/test?retryWrites=true&w=majority";
-console.log("LOoK HERE LOOK HERE")
-console.log(typeof uri)
+const uri = process.env.ATLAS_URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
 );
 const connection = mongoose.connection;
