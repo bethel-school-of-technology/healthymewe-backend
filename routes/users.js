@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let User = require('../models/user.model');
+const bcrypt = require('bcryptjs');
 
 router.route('/').get((req, res) => {
     User.find()
@@ -8,16 +9,36 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').put((req, res) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const username = req.body.username;
-    const password = req.body.password;
+    const { name, email, username, password } = req.body;
+
+    // Create salt & hash
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser.save()
+                .then(() => res.json('User added!'))
+                .catch(err => res.status(400).json('Error: ' + err));
+
+
+            // newUser.save()
+            //     .then(user => {
+            //         res.json({
+            //             user: {
+            //                 id: user.id,
+            //                 name: user.name,
+            //                 email: user.email
+            //             }
+            //         });
+            //     });
+        })
+    });
 
     const newUser = new User({ name, email, username, password });
 
-    newUser.save()
-        .then(() => res.json('User added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+    // newUser.save()
+    //     .then(() => res.json('User added!'))
+    //     .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').get((req, res) => {

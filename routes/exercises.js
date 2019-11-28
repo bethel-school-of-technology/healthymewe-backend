@@ -17,7 +17,7 @@ router.route('/add').put((req, res) => {
         username,
         description,
         duration,
-        date,
+        date
     });
 
     newExercise.save()
